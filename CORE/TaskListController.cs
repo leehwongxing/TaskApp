@@ -1,55 +1,29 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Services;
-using Google.Apis.Tasks.v1;
+﻿using Google.Apis.Tasks.v1;
 using Google.Apis.Tasks.v1.Data;
-using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Threading;
+using CORE.Interfaces;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace CORE
 {
-    public class TaskListController
+    public class TaskListController : ITaskListController
     {
         private TasksService Service { get; set; }
 
-        private UserCredential Credential { get; set; }
+        private Dictionary<string, ITaskController> Controlled { get; set; }
 
-        private static string[] Scopes = { TasksService.Scope.Tasks };
-
-        private static string ApplicationName = "TaskApp";
-
-        public TaskListController()
+        public TaskListController(TasksService Holder)
         {
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("CORE.client_secret.json"))
-            {
-                string CredentialPath = System.Environment.GetFolderPath(
-                    System.Environment.SpecialFolder.LocalApplicationData);
-                CredentialPath = Path.Combine(CredentialPath, "." + ApplicationName);
-
-                Credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(CredentialPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + CredentialPath);
-
-                Service = new TasksService(new BaseClientService.Initializer()
-                {
-                    HttpClientInitializer = Credential,
-                    ApplicationName = ApplicationName,
-                });
-            }
+            Service = Holder;
+            Controlled = new Dictionary<string, ITaskController>();
         }
 
         public IList<TaskList> List()
         {
             var Request = Service.Tasklists.List();
             var Result = Request.Execute().Items;
-            Console.WriteLine(Result.Count + " item has been listed");
             return Result;
         }
 
@@ -61,7 +35,6 @@ namespace CORE
             {
                 Result.Add(Item.Id, Item);
             }
-            Console.WriteLine(Result.Count + " item has been added");
             return Result;
         }
 
@@ -131,10 +104,50 @@ namespace CORE
             }
         }
 
-        public TaskController GetTaskController(string Id)
+        public ITaskController GetTaskController(string Id)
         {
-            var Result = Get(Id);
-            return new TaskController(Service, Result.Id);
+            Controlled.TryGetValue(Id, out ITaskController found);
+
+            if (found == null)
+            {
+                var Result = Get(Id);
+                var Controller = new TaskController(Service, Result.Id);
+
+                Controlled.Add(Id, Controller);
+                return Controller;
+            }
+            else
+            {
+                return found;
+            }
+        }
+
+        private bool disposed = false;
+        private SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                foreach (var Item in Controlled)
+                {
+                    Item.Value.Dispose();
+                }
+                Controlled.Clear();
+                handle.Dispose();
+            }
+
+            Service = null;
+            disposed = true;
         }
     }
 }

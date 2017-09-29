@@ -1,11 +1,13 @@
 ﻿using Google.Apis.Tasks.v1;
 using Google.Apis.Tasks.v1.Data;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace CORE
 {
-    public class TaskController
+    public class TaskController : Interfaces.ITaskController
     {
         public string TaskListId { get; private set; }
 
@@ -131,6 +133,29 @@ namespace CORE
             {
                 throw new Exception("Cant clear the completed Task of the TaskList");
             }
+        }
+
+        private bool disposed = false;
+        private SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                handle.Dispose();
+            }
+
+            Service = null;
+            disposed = true;
         }
     }
 }

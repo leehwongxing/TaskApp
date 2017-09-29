@@ -75,6 +75,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dashboard.cs" />
+    <Compile Include="Data\Setting.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Interfaces\IConfigure.cs" />
+    <Compile Include="Interfaces\ITaskController.cs" />
+    <Compile Include="Interfaces\ITaskListController.cs" />
     <Compile Include="TaskController.cs" />
     <Compile Include="TaskListController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,5 +90,6 @@
     <EmbeddedResource Include="client_secret.json" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
