@@ -11,5 +11,15 @@ namespace WPF
         {
             InitializeComponent();
         }
+
+        private void Container_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainView.Height = Container.ActualHeight - ExcludedZone.ActualHeight - 24;
+        }
+
+        private void Container_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            MainView.Height = Container.ActualHeight - ExcludedZone.ActualHeight - 24;
+        }
     }
 }
