@@ -1,10 +1,10 @@
-﻿using Google.Apis.Tasks.v1;
+﻿using CORE.Interfaces;
+using Google.Apis.Tasks.v1;
 using Google.Apis.Tasks.v1.Data;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
-using CORE.Interfaces;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 
 namespace CORE
 {

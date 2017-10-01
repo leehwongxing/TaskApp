@@ -14,10 +14,65 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.CheckBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.PopupBox.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.RadioButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ToggleButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
 
-    <Grid>
-        <materialDesign:Card Padding="32" Margin="16">
-            <TextBlock Style="{DynamicResource MaterialDesignTitleTextBlock}">My First Material Design App</TextBlock>
-        </materialDesign:Card>
-    </Grid>
+    <StackPanel>
+        <Grid>
+            <DockPanel HorizontalAlignment="Left" Width="225">
+                <StackPanel HorizontalAlignment="Left" Width="224" Margin="0,0,0,8">
+                    <TextBlock Margin="24,16,0,0" TextTrimming="WordEllipsis" FontSize="15">{Tên của TaskList hiện tại mà rất là dàiiiiiiiiiiiiiiiiiiiiiiiiiii}</TextBlock>
+                    <TextBlock Margin="24,8,0,0" FontSize="13">{Thời gian cập nhật}</TextBlock>
+                </StackPanel>
+            </DockPanel>
+            <DockPanel HorizontalAlignment="Right" Width="124">
+                <TextBlock Margin="0,8,24,0" FontSize="42" Opacity="0.65" TextAlignment="Right">999</TextBlock>
+            </DockPanel>
+        </Grid>
+        <ScrollViewer  VerticalScrollBarVisibility="Hidden" Height="590">
+            <StackPanel Margin="0,8,0,0" Name="MainContainer">
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+                <local:TaskExpander>
+                </local:TaskExpander>
+            </StackPanel>
+        </ScrollViewer>
+
+        <DockPanel Margin="0,-64,24,0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <materialDesign:PopupBox Style="{StaticResource MaterialDesignMultiFloatingActionPopupBox}"
+                                         PlacementMode="TopAndAlignCentres"
+                                         ToolTipService.Placement="Left"
+                                         ToolTip="Thực hiện hành động trên TaskList này">
+                <StackPanel>
+                    <Button ToolTip="One with custom opacity at 0.5" Opacity="0.5">1</Button>
+                    <Button ToolTip="Two">2</Button>
+                    <Button ToolTip="Three">3</Button>
+                </StackPanel>
+            </materialDesign:PopupBox>
+        </DockPanel>
+    </StackPanel>
 </Window>
