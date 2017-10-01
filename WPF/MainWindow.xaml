@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
-        Title="Google Tasks API" Height="720" Width="360" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" TabIndex="2147483646"
+        Title="Google Tasks API" Height="720" Width="360" WindowStartupLocation="CenterScreen" TabIndex="2147483646"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -13,7 +13,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}" MinWidth="360" MinHeight="360">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -29,36 +29,30 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <StackPanel>
-        <Grid>
-            <DockPanel HorizontalAlignment="Left" Width="225">
-                <StackPanel HorizontalAlignment="Left" Width="224" Margin="0,0,0,8">
-                    <TextBlock Margin="24,16,0,0" TextTrimming="WordEllipsis" FontSize="15">{Tên của TaskList hiện tại mà rất là dàiiiiiiiiiiiiiiiiiiiiiiiiiii}</TextBlock>
-                    <TextBlock Margin="24,8,0,0" FontSize="13">{Thời gian cập nhật}</TextBlock>
-                </StackPanel>
-            </DockPanel>
-            <DockPanel HorizontalAlignment="Right" Width="124">
-                <TextBlock Margin="0,8,24,0" FontSize="42" Opacity="0.65" TextAlignment="Right">999</TextBlock>
-            </DockPanel>
-        </Grid>
-        <ScrollViewer  VerticalScrollBarVisibility="Hidden" Height="590">
-            <StackPanel Margin="0,8,0,0" Name="MainContainer">
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
-                <local:TaskExpander>
-                </local:TaskExpander>
+    <StackPanel Name="Container" Loaded="Container_Loaded" SizeChanged="Container_SizeChanged">
+        <materialDesign:ColorZone Name="ExcludedZone" Mode="PrimaryDark" Padding="24,8,24,8">
+            <Grid>
+                <DockPanel Margin="0,0,83,0">
+                    <StackPanel HorizontalAlignment="Left">
+                        <TextBlock Margin="0,10,0,0" TextTrimming="WordEllipsis" FontSize="15">{Tên của TaskList hiện tại mà rất là dàiiiiiiiiiiiiiiiiiiiiiiiiiii}</TextBlock>
+                        <TextBlock Margin="0,4,0,0" FontSize="13">{Thời gian cập nhật}</TextBlock>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel HorizontalAlignment="Right">
+                    <TextBlock FontSize="48" Opacity="0.85" TextAlignment="Right">999</TextBlock>
+                </DockPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+        <ScrollViewer Name="MainView" VerticalScrollBarVisibility="Hidden" Height="584">
+            <StackPanel  x:Name="TaskContainer">
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
+                <local:TaskExpander />
             </StackPanel>
         </ScrollViewer>
 

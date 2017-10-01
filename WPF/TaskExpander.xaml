@@ -7,8 +7,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
-        FontFamily="{DynamicResource MaterialDesignFont}"
-        MaxWidth="1024">
+        FontFamily="{DynamicResource MaterialDesignFont}">
     <Expander HorizontalAlignment="Stretch"
                       Header="Expander Example 1a">
         <StackPanel Orientation="Vertical"
