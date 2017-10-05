@@ -91,35 +91,19 @@ namespace CORE
             {
                 throw new Exception("ID of TaskList cant be empty");
             }
-            var Content = new TaskList
-            {
-                Id = Id
-            };
             var Request = Service.Tasklists.Delete(Id);
             var Result = Request.Execute();
 
             if (!string.IsNullOrEmpty(Result))
             {
-                throw new Exception("Cant delete TaskList at " + Content.Id + " \r\n" + Result);
+                throw new Exception("Cant delete TaskList at " + Id + " \r\n" + Result);
             }
         }
 
         public ITaskController GetTaskController(string Id)
         {
-            Controlled.TryGetValue(Id, out ITaskController found);
-
-            if (found == null)
-            {
-                var Result = Get(Id);
-                var Controller = new TaskController(Service, Result.Id);
-
-                Controlled.Add(Id, Controller);
-                return Controller;
-            }
-            else
-            {
-                return found;
-            }
+            var Result = Get(Id);
+            return new TaskController(Service, Result.Id);
         }
 
         private bool disposed = false;

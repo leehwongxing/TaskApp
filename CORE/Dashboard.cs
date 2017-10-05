@@ -28,6 +28,15 @@ namespace CORE
 
         private ITaskListController Controlled { get; set; }
 
+        private static Lazy<Dashboard> LazyDashBoard { get; set; }
+
+        public static Dashboard Get { get { return LazyDashBoard.Value; } }
+
+        static Dashboard()
+        {
+            LazyDashBoard = new Lazy<Dashboard>(() => new Dashboard());
+        }
+
         public Dashboard()
         {
             Location = ".settings";
@@ -37,7 +46,7 @@ namespace CORE
         {
             try
             {
-                using (var Context = File.Open(Location, FileMode.Open, FileAccess.Read, FileShare.Read) as Stream)
+                using (var Context = File.Open(Path.Combine(Configure.AppData, Location), FileMode.Open, FileAccess.Read, FileShare.Read) as Stream)
                 using (var Reader = new StreamReader(Context, Encoding.UTF8, true, 1024))
                 {
                     var Temp = JsonConvert.DeserializeObject<Data.Setting>(Reader.ReadLine());
@@ -58,7 +67,7 @@ namespace CORE
         {
             try
             {
-                using (var Context = File.Open(Location, FileMode.Create, FileAccess.Write, FileShare.None) as Stream)
+                using (var Context = File.Open(Path.Combine(Configure.AppData, Location), FileMode.Create, FileAccess.Write, FileShare.None) as Stream)
                 using (var Writer = new StreamWriter(Context, Encoding.UTF8, 1024))
                 {
                     Writer.WriteLine(JsonConvert.SerializeObject(Configure));
@@ -77,7 +86,7 @@ namespace CORE
                 Credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     GoogleClientSecrets.Load(stream).Secrets,
                     Scopes,
-                    "user",
+                    "TaskAppUser",
                     CancellationToken.None,
                     new FileDataStore(Configure.CredentialPath, true)).Result;
                 Console.WriteLine("Credential saved to: " + Configure.CredentialPath);
@@ -100,6 +109,9 @@ namespace CORE
             Service.Dispose();
             Credential = null;
             Service = null;
+
+            var Path = new DirectoryInfo(Configure.CredentialPath);
+            Path.CleanUp();
         }
 
         private bool disposed = false;

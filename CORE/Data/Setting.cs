@@ -7,24 +7,29 @@ namespace CORE.Data
     {
         public string CredentialPath { get; set; }
 
-        public string OfflineQueue { get; private set; }
+        public string AppData { get; set; }
 
         public bool ShowHidden { get; set; }
 
         public bool ShowCompleted { get; set; }
 
+        public string LastTaskList { get; set; }
+
         public string ApplicationName { get; private set; }
 
         public Setting()
         {
-            var ParentFolder = Environment.GetFolderPath(
-                    Environment.SpecialFolder.LocalApplicationData);
-
-            OfflineQueue = ".offline";
-            ShowCompleted = true;
+            ShowCompleted = false;
             ShowHidden = false;
             ApplicationName = "TaskApp";
-            CredentialPath = Path.Combine(ParentFolder, "." + ApplicationName);
+
+            var Folder = Environment.GetFolderPath(
+                    Environment.SpecialFolder.LocalApplicationData);
+
+            AppData = Path.Combine(Folder, "." + ApplicationName);
+
+            CredentialPath = Path.Combine(AppData, "Credential");
+            LastTaskList = "";
         }
     }
 }
