@@ -115,8 +115,6 @@ namespace WF.Views
             {
                 DateTime Date = Tp_Date.Value.Date + Tp_Time.Value.TimeOfDay;
 
-                MessageBox.Show(Date.ToShortDateString() + Date.ToLongTimeString());
-
                 Data.Due = Date;
             }
             else
